@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: python-webserver
+  name: python-webserver
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: python-webserver
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: python-webserver
+    spec:
+      containers:
+      - image: rambooreddy/kaniko-python-webserver:latest
+        name: python-webserver
+        resources: {}
+status: {}
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: python-webserver
+  name: python-webserver
+spec:
+  type: NodePort
+  ports:
+  - port: 5000
+    protocol: TCP
+    targetPort: 5000
+    nodePort: 32143
+  selector:
+    app: python-webserver
+status:
+  loadBalancer: {}
